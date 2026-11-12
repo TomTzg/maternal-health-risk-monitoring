@@ -32,11 +32,22 @@ Baseline: majority‑class predictor
 
 ## Folder structure
 ```
-├── data/ # raw & processed dataset (raw data not tracked by git)
-├── src/ # source code: data, models, evaluation, utils
-├── reports/ # figures & experimental outputs
-├── demo/ # batch prediction demo
-├── docs/ # proposal & documentation
+├── data/
+│   ├── raw/
+│   └── processed/
+├── src/
+│   ├── data/
+│   ├── models/
+│   ├── evaluation/
+│   └── utils/
+├── reports/
+│   ├── figures/
+│   └── results/
+├── demo/
+└── docs/
+│   ├── proposal/
+│   ├── presentation/
+│   └── final_report/
 ```
 
 
