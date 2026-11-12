@@ -1,6 +1,12 @@
 # Machine Learning for Maternal Risk Monitoring
-> Project due date: 6 December 2026
-Team members: 1012453 Zhu Haoran, 1012594 Chen Yizun, 1012425 He Chenju, 1012361 Liu YongJiang, 1012405 Ren Zilong, 1012037 Zhang Yiyang
+Project due date: 6 December 2026
+> Team members: 
+- 1012453 Zhu Haoran
+- 1012594 Chen Yizun
+- 1012425 He Chenju
+- 1012361 Liu YongJiang
+- 1012405 Ren Zilong
+- 1012037 Zhang Yiyang
 
 ## Project Overview
 Maternal health risk classification using classical machine‑learning models.
@@ -25,11 +31,13 @@ Baseline: majority‑class predictor
 - Metrics: accuracy, macro‑F1, per‑class precision/recall, confusion matrix, high‑risk recall, inference latency, age‑group error analysis
 
 ## Folder structure
+```
 ├── data/ # raw & processed dataset (raw data not tracked by git)
 ├── src/ # source code: data, models, evaluation, utils
 ├── reports/ # figures & experimental outputs
 ├── demo/ # batch prediction demo
 ├── docs/ # proposal & documentation
+```
 
 
 ## Quick Start
