@@ -1,0 +1,25 @@
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+venv/
+
+# data raw 不提交
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# outputs
+reports/figures/*.png
+reports/results/*.csv
+!reports/figures/.gitkeep
+!reports/results/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
