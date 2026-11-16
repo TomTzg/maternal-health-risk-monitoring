@@ -10,10 +10,14 @@ Project due date: 6 December 2026
 
 ## Project Overview
 Maternal health risk classification using classical machine‑learning models.
-We compare Logistic Regression, RBF‑SVM, Gaussian Naive Bayes, Decision Tree, Random Forest, Gradient Boosting on the UCI Maternal Health Risk dataset.
+We compare Logistic Regression, RBF‑SVM, Gaussian Naive Bayes, Decision Tree, Random Forest, and Gradient Boosting on a maternal health risk dataset hosted by Mendeley Data.
 Goal: multi‑class risk prediction: `low risk / mid risk / high risk`.
 
-Dataset source: UCI Machine Learning Repository (Maternal Health Risk) [CC‑BY‑4.0]
+Dataset source: Hossain, Mohammad Mobarak (2025), “Maternal health risk data,” Mendeley Data, Version 1, DOI: [10.17632/ckhgtgdg4f.1](https://doi.org/10.17632/ckhgtgdg4f.1), licensed CC BY 4.0.
+
+The repository data file contains 6,103 records and the six inputs retained from the original project scope: age, systolic and diastolic blood pressure, fasting blood glucose, body temperature, and heart rate. The source CSV's `Patient ID` and `Name` fields, along with its additional BMI and HbA1c features, are excluded from the repository copy. The glucose source header states `mg/dl`, while the accompanying article describes the 3.5–8.9 values as mmol/L; this unit discrepancy is recorded for verification.
+
+The accompanying article reports removing 45 physiological outliers to obtain 6,058 records. The project audit retains the original 6,103 rows and treats range and cross-field plausibility concerns as audit findings; it does not silently remove records. In the retained six-feature view, identical input vectors can have different risk labels, so grouped splitting and explicit conflict reporting remain part of the experiment protocol.
 
 ## Models
 - Logistic Regression
