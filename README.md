@@ -19,13 +19,13 @@ The repository data file contains 6,103 records and the six inputs retained from
 
 The accompanying article reports removing 45 physiological outliers to obtain 6,058 records. The project audit retains the original 6,103 rows and treats range and cross-field plausibility concerns as audit findings; it does not silently remove records. In the retained six-feature view, identical input vectors can have different risk labels, so grouped splitting and explicit conflict reporting remain part of the experiment protocol.
 
-##Models
--Logistic Regression
--RBF Support Vector Machine
--Gaussian Naive Bayes
--Decision Tree
--Random Forest
--Gradient Boosting Baseline: majority‑class predictor
+## Models
+- Logistic Regression
+- RBF Support Vector Machine
+- Gaussian Naive Bayes
+- Decision Tree
+- Random Forest
+- Gradient Boosting Baseline: majority‑class predictor
 
 ## Model Choice: Random Forest
 We use a single model, **Random Forest** (`sklearn.ensemble.RandomForestClassifier`). 
