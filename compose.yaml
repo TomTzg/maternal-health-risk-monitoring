@@ -1,0 +1,40 @@
+x-common: &common
+  image: maternal-health-risk:local
+  build:
+    context: .
+    args:
+      PYTHON_IMAGE: ${PYTHON_IMAGE:-docker.1ms.run/library/python:3.11-slim}
+  init: true
+  volumes:
+    - ./data/raw:/app/data/raw:ro
+    - ./data/processed:/app/data/processed
+    - ./reports:/app/reports
+    - ./artifacts:/app/artifacts
+  environment:
+    OMP_NUM_THREADS: "1"
+    OPENBLAS_NUM_THREADS: "1"
+    MKL_NUM_THREADS: "1"
+
+services:
+  pipeline:
+    <<: *common
+  preprocess:
+    <<: *common
+    profiles: [stages]
+    command: [python, -m, src.data.make_dataset]
+  train:
+    <<: *common
+    profiles: [stages]
+    command: [python, -m, src.models.train]
+  evaluate:
+    <<: *common
+    profiles: [stages]
+    command: [python, -m, src.evaluation.evaluate]
+  demo:
+    <<: *common
+    profiles: [stages]
+    command: [python, -m, demo.run_demo]
+  test:
+    <<: *common
+    profiles: [test]
+    command: [python, -m, unittest, discover, -s, tests, -v]
