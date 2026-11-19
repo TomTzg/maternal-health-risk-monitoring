@@ -36,7 +36,7 @@
       "support": 1224.0
     }
   },
-  "batch_latency_ms": 20.52779199999577,
-  "amortized_latency_ms_per_row": 0.01677107189542138,
+  "batch_latency_ms": 11.43435299999851,
+  "amortized_latency_ms_per_row": 0.009341791666665449,
   "latency_note": "One warmed batch on this machine; excludes model loading and input validation."
 }
