@@ -9,8 +9,8 @@ Project due date: 6 December 2026
 - 1012037 Zhang Yiyang
 
 ## Project Overview
-Maternal health risk classification using a single classical machine‑learning model.
-We implement a Random Forest classifier on a maternal health risk dataset hosted by Mendeley Data.
+Maternal health risk classification using classical machine‑learning models.
+We compare Logistic Regression, RBF Support Vector Machine, Gaussian Naive Bayes, Decision Tree, Random Forest, and Gradient Boosting on the Mendeley Data maternal health risk dataset. A majority‑class predictor provides the baseline, and the best model by validation macro‑F1 is selected for final evaluation and the prediction demo.
 Goal: multi‑class risk prediction: `low risk / mid risk / high risk`.
 
 Dataset source: Hossain, Mohammad Mobarak (2025), “Maternal health risk data,” Mendeley Data, Version 1, DOI: [10.17632/ckhgtgdg4f.1](https://doi.org/10.17632/ckhgtgdg4f.1), licensed CC BY 4.0.
@@ -27,30 +27,24 @@ The accompanying article reports removing 45 physiological outliers to obtain 6,
 - Random Forest
 - Gradient Boosting Baseline: majority‑class predictor
 
-## Model Choice: Random Forest
-We use a single model, **Random Forest** (`sklearn.ensemble.RandomForestClassifier`). 
+## Model Comparison and Selection
+We compare Logistic Regression, RBF Support Vector Machine, Gaussian Naive Bayes, Decision Tree, Random Forest, and Gradient Boosting against a majority-class baseline. Each model is tuned with its own parameter grid using five-fold stratified group cross-validation, and models are ranked by mean validation macro-F1.
 
-Reasons for this choice:
+In the currently recorded comparison, Random Forest ranked first with validation macro-F1 0.9199, narrowly ahead of Gradient Boosting at 0.9180. Random Forest is therefore the selected model for the held-out test evaluation and batch prediction demo in that run. This selection reflects the recorded experiment, not a general claim that Random Forest will always perform best.
 
-- **Well suited to small tabular data.** With 6,103 records and 6 features, tree ensembles are a strong default. Bagged trees capture non‑linear effects and interactions between blood pressure, glucose, temperature, age, and heart rate without manual feature engineering, and they usually outperform single linear or single‑tree models on this kind of benchmark.
-- **Robust to heterogeneous units and outliers.** Inputs are measured in years, mmHg, mmol/L, °F, and bpm. Tree splits are invariant to monotone rescaling, so no normalization is needed, unlike distance‑based models such as RBF‑SVM. Out‑of‑range physiological readings have bounded influence on a split rather than dominating a distance or a linear coefficient.
-- **Lower variance than a single decision tree.** Bagging plus random feature subsampling reduces overfitting to noisy or conflicting labels, which is relevant here because identical six‑feature input vectors can carry different risk labels. Cross‑validation estimates are therefore more stable.
-- **Supports imbalance handling and risk triage.** `class_weight="balanced"` can lift mid‑ and high‑risk recall, and `predict_proba` provides per‑class probabilities that can be thresholded for triage instead of relying on hard labels.
-- **Production friendly.** Training parallelizes (`n_jobs`), results are reproducible with a fixed `random_state`, batch inference is fast, and feature importance gives a documented, reviewable basis for clinical stakeholders.
+Random Forest is a useful tabular-data candidate because it captures non-linear feature interactions without scaling, and bagging reduces the variance of an individual decision tree. The comparison still evaluates the other five models under the same data split and validation metric.
 
-**Trade‑offs acknowledged:** the model is less transparent than logistic regression, has a larger memory footprint than a single tree, and cannot extrapolate beyond the observed feature ranges. Feature importance (impurity‑ and permutation‑based) is used to document model behaviour, and out‑of‑range inputs are flagged at inference time.
+**Current Random Forest search grid:** `max_depth` and `min_samples_leaf`. Other models use their model-specific grids in `src/models/model_config.py`.
 
-**Tuned hyper‑parameters:** `n_estimators`, `max_depth`, `min_samples_leaf`, `max_features`, `class_weight`.
-
-Baseline: majority‑class predictor, reported for reference only (not a competing model).
+**Baseline:** majority-class predictor, included as a reference point in the model comparison.
 
 
 ## Experiment protocol
 - Grouped splitting by identical input vectors to prevent leakage between train and test
 - 20% held‑out final test set
-- 5‑fold stratified cross‑validation on the remaining 80% for hyper‑parameter tuning
-- Tune Random Forest hyper‑parameters, selecting the configuration with the best validation macro‑F1
-- Refit the single selected configuration on the full training set and evaluate once on the held‑out test set
+- 5‑fold stratified group cross‑validation on the remaining 80% for hyper‑parameter tuning
+- Tune each of the six models using its model-specific parameter grid; select the model and configuration with the best mean validation macro‑F1
+- Refit the selected pipeline on the full training set and evaluate it once on the held‑out test set
 - Metrics: accuracy, macro‑F1, per‑class precision/recall, confusion matrix, high‑risk recall, inference latency, age‑group error analysis
 - Majority‑class baseline reported for reference
 
