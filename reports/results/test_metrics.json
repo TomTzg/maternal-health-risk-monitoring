@@ -1,0 +1,42 @@
+{
+  "test_rows": 1224,
+  "accuracy": 0.9354575163398693,
+  "macro_f1": 0.9359674972520288,
+  "high_risk_recall": 0.9170854271356784,
+  "classification_report": {
+    "low risk": {
+      "precision": 0.9630541871921182,
+      "recall": 0.9923857868020305,
+      "f1-score": 0.9775,
+      "support": 394.0
+    },
+    "mid risk": {
+      "precision": 0.9218009478672986,
+      "recall": 0.9004629629629629,
+      "f1-score": 0.9110070257611241,
+      "support": 432.0
+    },
+    "high risk": {
+      "precision": 0.9217171717171717,
+      "recall": 0.9170854271356784,
+      "f1-score": 0.9193954659949622,
+      "support": 398.0
+    },
+    "accuracy": 0.9354575163398693,
+    "macro avg": {
+      "precision": 0.9355241022588628,
+      "recall": 0.9366447256335574,
+      "f1-score": 0.9359674972520288,
+      "support": 1224.0
+    },
+    "weighted avg": {
+      "precision": 0.9350529359279429,
+      "recall": 0.9354575163398693,
+      "f1-score": 0.9351384236885626,
+      "support": 1224.0
+    }
+  },
+  "batch_latency_ms": 20.52779199999577,
+  "amortized_latency_ms_per_row": 0.01677107189542138,
+  "latency_note": "One warmed batch on this machine; excludes model loading and input validation."
+}
