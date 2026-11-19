@@ -19,6 +19,8 @@ The repository data file contains 6,103 records and the six inputs retained from
 
 The accompanying article reports removing 45 physiological outliers to obtain 6,058 records. The project audit retains the original 6,103 rows and treats range and cross-field plausibility concerns as audit findings; it does not silently remove records. In the retained six-feature view, identical input vectors can have different risk labels, so grouped splitting and explicit conflict reporting remain part of the experiment protocol.
 
+**Project summary:** [`docs/SUMMARY.md`](docs/SUMMARY.md) — project overview, key results, data locations, and reproduction workflow.
+
 ## Models
 - Logistic Regression
 - RBF Support Vector Machine
@@ -65,7 +67,8 @@ Random Forest is a useful tabular-data candidate because it captures non-linear 
 └── docs/
 │   ├── proposal/
 │   ├── presentation/
-│   └── final_report/
+│   ├── final_report/
+│   └── SUMMARY.md
 ```
 
 
