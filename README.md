@@ -75,21 +75,73 @@ Baseline: majority‑class predictor, reported for reference only (not a competi
 ```
 
 
-## Quick Start
+## Quick Start (Docker)
+
+Install Docker Engine / Docker Desktop with Compose v2. No host Python setup is required.
+Run all commands from this repository root. Place the original six-feature CSV at
+`data/raw/Maternal Health Risk Data Set.csv` (raw data is intentionally ignored by Git).
+The required columns are `Age,SystolicBP,DiastolicBP,BS,BodyTemp,HeartRate,RiskLevel`.
+
 ```bash
-# create virtual environment
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+# Build the shared Python 3.11 image
+docker compose build
+# Audit, split, tune all six models + baseline, evaluate, then predict sample inputs
+docker compose run --rm pipeline
+# Faster smoke run: one parameter candidate per model, still five-fold CV
+docker compose run --rm pipeline python -m src.pipeline --quick
+# Automated data isolation, model fitting and batch inference checks
+docker compose run --rm test
+```
 
-# run preprocessing
-python src/data/make_dataset.py
+Compose uses the `docker.1ms.run` mirror for the Python base image. To use Docker
+Hub directly, run `PYTHON_IMAGE=python:3.11-slim docker compose build`.
 
-# train & cross‑validate
-python src/models/train.py
+Individual stages (run in this order):
 
-# evaluate on held‑out test set
-python src/evaluation/evaluate.py
+```bash
+docker compose run --rm preprocess
+docker compose run --rm train
+docker compose run --rm evaluate
+docker compose run --rm demo
+```
 
-# run batch prediction demo
-python demo/run_demo.py
+Use `docker compose run --rm train python -m src.models.train --jobs 2` for
+parallel parameter search. Custom demo CSV files can be placed in `data/raw`:
+
+```bash
+docker compose run --rm demo python -m demo.run_demo --input /app/data/raw/input.csv --output /app/reports/results/predictions.csv
+```
+
+### Data and experiment behavior
+
+- A fixed seed (42) and five-way stratified **grouped** split allocate approximately
+  20% to the final test set; exact size may vary to keep identical feature vectors together.
+- Five-fold stratified grouped cross-validation uses only the remaining training data.
+  Median imputation and scaling (LR/SVM) are fitted inside each training fold.
+- All six models and the majority-class baseline are compared by validation macro-F1.
+  The winning pipeline is refitted on all training rows and saved for evaluation/inference.
+- Missing numeric values are imputed. Invalid columns, labels, nonnumeric values and
+  infinities are rejected. Physiological flags and conflicting labels are reported without filtering.
+- Holdout results do not participate in model selection. Run final evaluation after
+  fixing the experiment configuration; repeated tuning against test results invalidates the holdout.
+- Blood glucose units remain unresolved; values are preserved as provided. This is a
+  research demonstration and is not validated for clinical decision-making.
+
+### Persistent outputs
+
+Docker mounts raw data read-only and writes other outputs to host bind mounts:
+
+| Path | Content |
+| --- | --- |
+| `data/processed/train.csv`, `test.csv` | Group-disjoint split |
+| `reports/results/data_audit.json` | Counts, missing values, conflicting labels, range flags, split summary |
+| `reports/results/model_comparison.csv`, `cv_*.csv` | Validation scores and parameter searches |
+| `artifacts/best_model.joblib`, `model_metadata.json` | Selected fitted pipeline and experiment settings |
+| `reports/results/test_metrics.json` | Accuracy, macro-F1, per-class precision/recall, high-risk recall, warmed batch latency |
+| `reports/results/confusion_matrix.csv`, `test_predictions.csv`, `age_group_errors.csv` | Test diagnostics |
+| `reports/figures/confusion_matrix.png` | Confusion matrix plot |
+| `reports/results/demo_predictions.csv` | Batch prediction example |
+
+Outputs are overwritten on rerun. Models must be regenerated when dependencies change;
+load only trusted joblib artifacts. Input/output directories can be overridden by
+editing Compose bind mounts. Data and generated model artifacts are not baked into the image.

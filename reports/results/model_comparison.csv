@@ -1,0 +1,8 @@
+model,validation_macro_f1,validation_std,best_params
+random_forest,0.9199070331188952,0.007941323658759056,"{'model__max_depth': None, 'model__min_samples_leaf': 1}"
+gradient_boosting,0.9180483043702361,0.004728125009647254,"{'model__learning_rate': 0.1, 'model__n_estimators': 100}"
+decision_tree,0.9011895895330196,0.007763459473577924,"{'model__max_depth': None, 'model__min_samples_leaf': 5}"
+rbf_svm,0.8845778441688188,0.0076353706060551,"{'model__C': 10, 'model__gamma': 'scale'}"
+gaussian_nb,0.7636719551567162,0.026935635600328446,{'model__var_smoothing': 1e-07}
+logistic_regression,0.5536345865491271,0.016748125432932925,{'model__C': 0.1}
+majority_baseline,0.1693184701196188,0.005243156652820822,{}

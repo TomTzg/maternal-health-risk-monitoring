@@ -23,3 +23,7 @@ reports/results/*.csv
 .vscode/
 .idea/
 *.swp
+# generated models and reports
+artifacts/
+reports/results/*.json
+.venv*/

@@ -1,0 +1,39 @@
+{
+  "rows": 6103,
+  "class_counts": {
+    "high risk": 2059,
+    "mid risk": 2043,
+    "low risk": 2001
+  },
+  "missing_values": {
+    "Age": 0,
+    "SystolicBP": 0,
+    "DiastolicBP": 0,
+    "BS": 0,
+    "BodyTemp": 0,
+    "HeartRate": 0
+  },
+  "unique_feature_groups": 5555,
+  "duplicate_feature_rows": 548,
+  "conflicting_label_groups": 311,
+  "rows_in_conflicting_groups": 622,
+  "range_flags": {
+    "Age": 1,
+    "SystolicBP": 0,
+    "DiastolicBP": 1,
+    "BS": 0,
+    "BodyTemp": 43,
+    "HeartRate": 0
+  },
+  "systolic_not_above_diastolic": 19,
+  "rows_removed": 0,
+  "glucose_unit": "Unresolved: source header mg/dl versus article mmol/L; values retained unchanged.",
+  "range_flag_note": "Broad audit thresholds only; no rows filtered.",
+  "split": {
+    "train_rows": 4879,
+    "test_rows": 1224,
+    "test_fraction": 0.20055710306406685,
+    "group_overlap": 0,
+    "seed": 42
+  }
+}
