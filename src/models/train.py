@@ -8,6 +8,7 @@ from sklearn.model_selection import GridSearchCV, StratifiedGroupKFold
 from src.data.preprocess import validate_frame, feature_groups
 from src.models.model_config import model_configs
 from src.utils.utilities import PROCESSED, RESULTS, ARTIFACTS, FEATURES, LABELS, SEED, save_json
+from src.evaluation.plot_results import plot_model_comparison
 
 
 def train(quick=False, jobs=1):
@@ -33,7 +34,9 @@ def train(quick=False, jobs=1):
             best_model, best_score, best_name = search.best_estimator_, search.best_score_, name
     ARTIFACTS.mkdir(parents=True, exist_ok=True)
     joblib.dump(best_model, ARTIFACTS / "best_model.joblib")
-    pd.DataFrame(rows).sort_values("validation_macro_f1", ascending=False).to_csv(RESULTS / "model_comparison.csv", index=False)
+    comparison = pd.DataFrame(rows).sort_values("validation_macro_f1", ascending=False)
+    comparison.to_csv(RESULTS / "model_comparison.csv", index=False)
+    plot_model_comparison(comparison)
     save_json(ARTIFACTS / "model_metadata.json", {"selected_model": best_name,
               "validation_macro_f1": best_score, "features": FEATURES, "labels": LABELS,
               "seed": SEED, "folds": 5, "quick": quick, "selection": "training CV macro-F1 only"})

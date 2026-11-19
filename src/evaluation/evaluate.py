@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix, ConfusionMatrixDisplay
 from src.data.preprocess import validate_frame
 from src.utils.utilities import PROCESSED, ARTIFACTS, RESULTS, FIGURES, FEATURES, LABELS, save_json
+from src.evaluation.plot_results import plot_age_group_errors
 
 
 def evaluate():
@@ -46,6 +47,7 @@ def evaluate():
                        "error_rate": float((y[mask] != predicted[mask]).mean()) if mask.any() else None,
                        "macro_f1": f1_score(y[mask], predicted[mask], labels=LABELS, average="macro", zero_division=0) if mask.any() else None})
     pd.DataFrame(errors).to_csv(RESULTS / "age_group_errors.csv", index=False)
+    plot_age_group_errors(output)
     print(f"Held-out accuracy={metrics['accuracy']:.4f}; macro-F1={metrics['macro_f1']:.4f}")
     return metrics
 
